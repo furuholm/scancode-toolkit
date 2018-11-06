@@ -67,12 +67,12 @@ import subprocess
 # platform-specific file base names
 sys_platform = str(sys.platform).lower()
 on_win = False
-if 'linux' in sys_platform:
+if sys_platform.startswith('linux'):
     platform_names = ('posix', 'linux',)
-elif 'win32' in sys_platform:
+elif sys_platform == 'win32':
     platform_names = ('win',)
     on_win = True
-elif 'darwin' in sys_platform:
+elif sys_platform == 'darwin':
     platform_names = ('posix', 'mac',)
 else:
     raise Exception('Unsupported OS/platform %r' % sys_platform)

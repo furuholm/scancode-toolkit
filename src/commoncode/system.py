@@ -40,11 +40,11 @@ def os_arch():
         arch = '32'
 
     sys_platform = str(sys.platform).lower()
-    if 'linux' in sys_platform:
+    if sys_platform.startswith('linux'):
         os = 'linux'
-    elif 'win32' in sys_platform:
+    elif sys_platform == 'win32':
         os = 'win'
-    elif 'darwin' in sys_platform:
+    elif sys_platform == 'darwin':
         os = 'mac'
     else:
         raise Exception('Unsupported OS/platform %r' % sys_platform)
