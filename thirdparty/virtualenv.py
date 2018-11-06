@@ -1052,10 +1052,10 @@ def copy_required_modules(dst_prefix, symlink):
             if f is not None:
                 f.close()
             # special-case custom readline.so on OS X, but not for pypy:
-            if modname == 'readline' and sys.platform == 'darwin' and not (
+            if modname == 'readline' and is_darwin and not (
                     is_pypy or filename.endswith(join('lib-dynload', 'readline.so'))):
                 dst_filename = join(dst_prefix, 'lib', 'python%s' % sys.version[:3], 'readline.so')
-            elif modname == 'readline' and sys.platform == 'win32':
+            elif modname == 'readline' and is_win:
                 # special-case for Windows, where readline is not a
                 # standard module, though it may have been installed in
                 # site-packages by a third-party package
@@ -1283,7 +1283,7 @@ def install_python(home_dir, lib_dir, inc_dir, bin_dir, site_packages, clear, sy
         if is_pypy:
             # make a symlink python --> pypy-c
             python_executable = os.path.join(os.path.dirname(py_executable), 'python')
-            if sys.platform in ('win32', 'cygwin'):
+            if is_win or is_cygwin:
                 python_executable += '.exe'
             logger.info('Also created executable %s' % python_executable)
             copyfile(py_executable, python_executable, symlink)
@@ -1489,7 +1489,7 @@ def install_files(home_dir, bin_dir, prompt, files):
         writefile(os.path.join(bin_dir, name), content)
 
 def install_python_config(home_dir, bin_dir, prompt=None):
-    if sys.platform == 'win32' or is_jython and os._name == 'nt':
+    if is_win or is_jython and os._name == 'nt':
         files = {}
     else:
         files = {'python-config': PYTHON_CONFIG}
